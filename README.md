@@ -2,7 +2,7 @@
 <h1>API Restful</h1>
 <br>
 <span style = padding-left:40">
-	API para implementação e estudo do <span><b> Hibernate Envers</b></span> - ferramenta utilizada na geração de <b>tabelas de log para monitoramento e auditoria do Database</b>.
+	API para implementação e estudo do <b> Hibernate Envers</b> - ferramenta utilizada na geração de <b>tabelas de log para monitoramento e auditoria do Database</b>.
 </span>
 
 <br><br>
