@@ -2,7 +2,7 @@
 <h1>API Restful</h1>
 <br>
 <span style = padding-left:40">
-	API para implementação e estudo do <b> Hibernate Envers</b> - ferramenta utilizada na geração de <b>tabelas de log para monitoramento e auditoria do Database</b>.
+	API para implementação e estudo do <b>HIBERNATE ENVERS</b> - ferramenta utilizada na geração de <b>tabelas de log para monitoramento e auditoria do Database</b>.
 </span>
 
 <br><br>
@@ -34,8 +34,8 @@
 <br><br>
 
 <h3>Type a ser criado no PostgreSQL</h3>
-<span style = padding-left:40">
-	Após criar o banco de dados é necessário rodar o comando SQL abaixo para criação do <b>Type</b> configurado na conexão com Java.
+<span style = "padding-left:40">
+	Após criar o banco de dados é necessário rodar o comando SQL abaixo para criação do <b>TYPE</b> configurado na conexão com Java.
 </span>
 
 <br>
@@ -47,6 +47,6 @@
 
 
 <br><br>
-<h2> <img align="center" width="84" height="40" src="https://raw.githubusercontent.com/TheDudeThatCode/TheDudeThatCode/master/Assets/Handshake.gif"> Contato
+## <img align="center" width="84" height="40" src="https://raw.githubusercontent.com/TheDudeThatCode/TheDudeThatCode/master/Assets/Handshake.gif"> Contato
 <a href="https://www.linkedin.com/in/alexfogazzi/"><img align="center" width="84" height="30" src="https://img.shields.io/badge/Alex-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
 
