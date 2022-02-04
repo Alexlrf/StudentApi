@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apistudent.alex.entity.EntityWithRevisions;
@@ -25,6 +26,7 @@ import com.apistudent.alex.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
+@RequestMapping(value="/studentApi")
 public class StudentController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
@@ -35,7 +37,7 @@ public class StudentController {
 	@Autowired
 	private GenericRevisionRepository genericRevisionRepository;
 
-	@GetMapping(value = "/teste")
+	@GetMapping(value = "/test")
 	public String getTestMessages() {
 		return "Tudo OK!";
 
@@ -57,10 +59,6 @@ public class StudentController {
 			headers = new HttpHeaders();
 			headers.add("Content-Type", "application/json");
 
-//			studentService.save(student);
-//			Long idStudent = student.getIdStudent();
-//
-//			student.getAddress().get(0).getStudent().setIdStudent(idStudent);
 			studentService.save(student);
 
 		} catch (Exception e) {
@@ -107,7 +105,7 @@ public class StudentController {
 
 	/* BUSCA DAS TABELAS AUDITED */
 
-	@GetMapping(value = "/buscaLog/{id}")
+	@GetMapping(value = "/changesLog/{id}")
 	public ResponseEntity<List<EntityWithRevisions<Student>>>  getLogMessages(@PathVariable Long id) {
 		
 		Optional<Student> stududentAudited = studentService.findById(id);		
