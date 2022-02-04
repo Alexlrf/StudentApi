@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity(name = "address")
 public class Address {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_address")
