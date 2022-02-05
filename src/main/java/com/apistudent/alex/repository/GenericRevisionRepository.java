@@ -13,8 +13,8 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apistudent.alex.entity.EntityWithRevisions;
-import com.apistudent.alex.entity.RevisionCustom;
+import com.apistudent.alex.model.entity.EntityWithRevisions;
+import com.apistudent.alex.model.entity.RevisionCustom;
 
 @Repository
 @Transactional

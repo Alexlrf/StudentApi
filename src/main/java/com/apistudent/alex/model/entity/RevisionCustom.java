@@ -1,4 +1,4 @@
-package com.apistudent.alex.entity;
+package com.apistudent.alex.model.entity;
 
 import java.util.Date;
 

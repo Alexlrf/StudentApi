@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apistudent.alex.entity.EntityWithRevisions;
-import com.apistudent.alex.entity.Student;
+import com.apistudent.alex.domain.ExceptionMessage;
+import com.apistudent.alex.exception.StudentBadRequestException;
+import com.apistudent.alex.exception.StudentNotFoundException;
+import com.apistudent.alex.model.dto.ErrorMessageDto;
+import com.apistudent.alex.model.entity.EntityWithRevisions;
+import com.apistudent.alex.model.entity.Student;
 import com.apistudent.alex.repository.GenericRevisionRepository;
 import com.apistudent.alex.service.StudentService;
 import com.apistudent.alex.utils.Utils;
@@ -49,6 +53,45 @@ public class StudentController {
 		return studentService.findAll();
 
 	}
+	
+	
+	
+	@GetMapping(value = "/student/{id}")
+	public  ResponseEntity<Object> findById(@PathVariable String id) {
+		
+		Student studentFind = null;
+		Long validId;
+		
+		if (id.isEmpty() || Character.isLetter(id.charAt(id.length() - 1))) {
+			throw new StudentBadRequestException(ExceptionMessage.bad_request.getText());
+		} else {
+			validId = Long.valueOf(id);
+		}
+		
+		try {
+			studentFind = studentService.findById(validId);
+			
+		} catch (Exception e) {
+			studentService.trataException(e);
+		}
+		return new ResponseEntity<>(studentFind, HttpStatus.OK);
+
+	}
+	
+	
+	
+//	@GetMapping(value = "/student/{id}")
+//	public  Object findById(@PathVariable Long id) {
+//		
+//		Optional<Student> studentFind = studentService.findById(id);
+//		
+//		if (studentFind.isPresent()) {
+//			return new ResponseEntity<>(studentFind, HttpStatus.OK);
+//		}else {
+//			throw new StudentNotFoundException("Student not found");			
+//		}
+//
+//	}
 
 	@PostMapping(value = "/student")
 	public ResponseEntity<Student> save(@RequestBody Student student) {
@@ -62,12 +105,15 @@ public class StudentController {
 			studentService.save(student);
 
 		} catch (Exception e) {
-			try {
-				LOGGER.info("Erro Response - " + Utils.createJson(student) + " - " + e.getMessage() );
-			} catch (JsonProcessingException e1) {
-				e1.getMessage();
-			}
-			return new ResponseEntity<Student>(null, headers, HttpStatus.BAD_REQUEST);
+			
+			throw new StudentNotFoundException("");
+			
+//			try {
+//				LOGGER.info("Erro Response - " + Utils.createJson(student) + " - " + e.getMessage() );
+//			} catch (JsonProcessingException e1) {
+//				e1.getMessage();
+//			}
+//			return new ResponseEntity<Student>(null, headers, HttpStatus.BAD_REQUEST);
 		}
 		return ResponseEntity.ok().headers(headers).body(student);
 
@@ -108,8 +154,8 @@ public class StudentController {
 	@GetMapping(value = "/changesLog/{id}")
 	public ResponseEntity<List<EntityWithRevisions<Student>>>  getLogMessages(@PathVariable Long id) {
 		
-		Optional<Student> stududentAudited = studentService.findById(id);		
-		List<EntityWithRevisions<Student>> listRevisions = genericRevisionRepository.listRevisions(stududentAudited.get().getIdStudent(), Student.class);
+		Student stududentAudited = studentService.findById(id);		
+		List<EntityWithRevisions<Student>> listRevisions = genericRevisionRepository.listRevisions(stududentAudited.getIdStudent(), Student.class);
 
 		if (listRevisions != null) {
 			return new ResponseEntity<List<EntityWithRevisions<Student>>>(listRevisions, HttpStatus.OK);

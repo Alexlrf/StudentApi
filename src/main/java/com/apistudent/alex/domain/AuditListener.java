@@ -4,7 +4,7 @@ import org.hibernate.envers.RevisionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.apistudent.alex.entity.RevisionCustom;
+import com.apistudent.alex.model.entity.RevisionCustom;
 
 /*
  * Classe encarregada de adicionar atributos na tabela de auditoria (Database)
