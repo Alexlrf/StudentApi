@@ -6,12 +6,14 @@ import java.time.format.DateTimeFormatter;
 public class ErrorMessageDto {
 
 	private String title;
+	private String message;
 	private int status;
 	private String path;
 	private String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a z Z"));
 
-	public ErrorMessageDto(String string, int status, String path) {
-		this.title = string;
+	public ErrorMessageDto(String title, String message, int status, String path) {
+		this.title = title;
+		this.message = message;
 		this.status = status;
 		this.path = path;
 	}
@@ -26,6 +28,14 @@ public class ErrorMessageDto {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public int getStatus() {
