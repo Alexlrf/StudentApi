@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.apistudent.alex.exception.NullPointerExceptionCustom;
 import com.apistudent.alex.exception.StudentBadRequestException;
 import com.apistudent.alex.exception.StudentNotFoundException;
-import com.apistudent.alex.model.dto.ErrorMessageDto;
 import com.apistudent.alex.model.entity.Student;
 import com.apistudent.alex.repository.StudentRepository;
 
@@ -18,9 +16,17 @@ public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
 	
-	public Student findById(Long id) {
-		return studentRepository.findById(id).get();
+	public Student findById(String id) {
 		
+		Long validId;
+		if ((null == id || id.isEmpty()) 
+				|| Character.isLetter(id.charAt(id.length() - 1))) {
+			throw new StudentBadRequestException("Invalid parameters");
+		} else {
+			validId = Long.valueOf(id);
+		}		
+		return studentRepository.findById(validId).
+				orElseThrow(() -> new StudentNotFoundException("Student not found"));
 	}
 	
 	public Student save(Student student) {
@@ -37,18 +43,39 @@ public class StudentService {
 		return studentRepository.findAll();
 	}
 
-	public void trataException(Exception e) {
+	public Student findWithBody(Student student) {
 		
-		if (e.getMessage().toUpperCase().contains("NOT FOUND") || e.getMessage().toUpperCase().contains("NO VALUE PRESENT")) {
-			throw new StudentNotFoundException(e.getMessage());
+		if((null == student.getFirstname() || student.getFirstname().isEmpty())
+				&& null == student.getMaritalStatus()) {
+			throw new StudentBadRequestException("Properties 'firstname'  and  'maritalStatus'  are required");
+		}else if (null == student.getFirstname() || student.getFirstname().isEmpty()) {
+			throw new StudentBadRequestException("Property 'firstname' is required");
+		} else if (null == student.getMaritalStatus()){
+			throw new StudentBadRequestException("Property 'maritalStatus' is required");
+		} 
 			
-		} else if (e.getMessage().toUpperCase().contains("REQUEST")) {
-			throw new StudentBadRequestException(e.getMessage());
-			
+		Student studentFound = studentRepository.findByFirstnameAndMaritalStatus(student.getFirstname(), student.getMaritalStatus());
+		
+		if (studentFound != null) {
+			return studentFound;
 		} else {
-			throw new NullPointerExceptionCustom(e.getMessage());
+			throw new StudentNotFoundException("Student not found");
 		}
+				 	
 	}
+
+//	public void trataException(Exception e) {
+//		
+//		if (e.getMessage().toUpperCase().contains("NOT FOUND") || e.getMessage().toUpperCase().contains("NO VALUE PRESENT")) {
+//			throw new StudentNotFoundException(e.getMessage());
+//			
+//		} else if (e.getMessage().toUpperCase().contains("REQUEST")) {
+//			throw new StudentBadRequestException(e.getMessage());
+//			
+//		} else {
+//			throw new NullPointerExceptionCustom(e.getMessage());
+//		}
+//	}
 }
 
 

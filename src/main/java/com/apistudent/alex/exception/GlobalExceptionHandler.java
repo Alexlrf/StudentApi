@@ -1,35 +1,48 @@
 package com.apistudent.alex.exception;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.apistudent.alex.domain.ExceptionMessage;
 import com.apistudent.alex.model.dto.ErrorMessageDto;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	
-	@ExceptionHandler(StudentNotFoundException.class)
-	public ResponseEntity<ErrorMessageDto> handleStudentNotFoundException(StudentNotFoundException ex){
+	@ExceptionHandler(value= StudentNotFoundException.class)
+	public ResponseEntity<ErrorMessageDto> handleStudentNotFoundException(StudentNotFoundException ex, WebRequest request, HttpServletRequest req){
 		return new ResponseEntity<ErrorMessageDto>(new ErrorMessageDto
-					(ExceptionMessage.not_found, ex.getMessage(), HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
+					(ex.getMessage(), HttpStatus.NOT_FOUND.value(), req.getRequestURI()), HttpStatus.NOT_FOUND);
 			
 	}
 	
-	@ExceptionHandler(StudentBadRequestException.class)
-	public ResponseEntity<ErrorMessageDto> handleStudentBadRequestException(StudentBadRequestException ex){
+	@ExceptionHandler(value= StudentBadRequestException.class)
+	public ResponseEntity<ErrorMessageDto> handleStudentBadRequestException(StudentBadRequestException ex, WebRequest request, HttpServletRequest req){
 		return new ResponseEntity<ErrorMessageDto>(new ErrorMessageDto
-					(ExceptionMessage.bad_request, ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+					(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), req.getRequestURI()), HttpStatus.BAD_REQUEST);
 			
 	}
 	
-	@ExceptionHandler(NullPointerExceptionCustom.class)
-	public ResponseEntity<ErrorMessageDto> handleStudentBadRequestException(NullPointerExceptionCustom ex){
+	@ExceptionHandler(value= Exception.class)
+	public ResponseEntity<ErrorMessageDto> handleAnyException(Exception e, WebRequest request, HttpServletRequest reques){
 		return new ResponseEntity<ErrorMessageDto>(new ErrorMessageDto
-					(ExceptionMessage.internal_error, ex.getMessage(), HttpStatus.BAD_GATEWAY), HttpStatus.BAD_GATEWAY);
+					(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value(), reques.getRequestURI()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 			
 	}
+	
+
+//	
+//	@ExceptionHandler(NullPointerExceptionCustom.class)
+//	public ResponseEntity<ErrorMessageDto> handleStudentBadRequestException(NullPointerExceptionCustom ex, HttpServletRequest request){
+//		return new ResponseEntity<ErrorMessageDto>(new ErrorMessageDto
+//					(ExceptionMessage.internal_error, ex.getMessage(), HttpStatus.BAD_GATEWAY.value(), request.getRequestURI()), HttpStatus.BAD_GATEWAY);
+//			
+//	}
 
 }
