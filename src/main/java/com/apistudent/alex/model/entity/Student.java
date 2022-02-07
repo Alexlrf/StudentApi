@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -36,22 +39,29 @@ public class Student{
 	@Column(name = "id_student")
 	private Long idStudent;
 	
+	@NotBlank(message = "{name.not.blank}")
 	@Column(name = "firstname")
 	@JsonProperty("firstname")
 	private String firstname;
 
+	@NotBlank(message = "{lastname.not.blank}")
 	@Column(name = "lastname")
 	@JsonProperty("lastname")
 	private String lastname;
 
+	@NotBlank
+	@Size(min=5)
 	@Column(name = "phone")
 	@JsonProperty("phone")
 	private String phone;
 	
+	@NotBlank(message = "{email.not.blank}")
+	@Email
 	@Column(name = "email")
 	@JsonProperty("email")
 	private String email;
 	
+//	@NotBlank(message = "{maritalStatus.not.blank}")
 	@Column(name = "marital_status_enum", columnDefinition = "marital_status") // marital_status é o Type criado no Postgres
 	@JsonProperty("maritalStatus")
 	@Enumerated(EnumType.STRING)	

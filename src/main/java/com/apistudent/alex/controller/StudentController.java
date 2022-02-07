@@ -2,6 +2,8 @@ package com.apistudent.alex.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,7 @@ public class StudentController {
 	}
 
 	@PostMapping(value = "/student")
-	public ResponseEntity<Student> save(@RequestBody Student student) {
+	public ResponseEntity<Student> save(@RequestBody  @Valid Student student) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");

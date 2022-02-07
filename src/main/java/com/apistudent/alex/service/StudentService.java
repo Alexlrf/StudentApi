@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.apistudent.alex.exception.StudentBadRequestException;
 import com.apistudent.alex.exception.StudentNotFoundException;
@@ -18,9 +19,10 @@ public class StudentService {
 	
 	public Student findById(String id) {
 		
-		Long validId;
+		Long validId;		
+		String idWithoutNumbers = id.replaceAll("\\d", "");
 		
-		if ((null == id || id.isEmpty()) || Character.isLetter(id.charAt(id.length() - 1))) {
+		if (!ObjectUtils.isEmpty(idWithoutNumbers)) {
 			throw new StudentBadRequestException("Invalid parameters");
 		} else {
 			validId = Long.valueOf(id);
@@ -29,19 +31,24 @@ public class StudentService {
 				orElseThrow(() -> new StudentNotFoundException("Student not found"));
 	}
 	
+//	public Student save(Student student) {
+//		
+//		if(null == student.getFirstname() || student.getFirstname().isEmpty()) {
+//			throw new StudentBadRequestException("Property 'firstname'is required");
+//		} else if (null == student.getLastname() || student.getLastname().isEmpty()) {
+//			throw new StudentBadRequestException("Property 'lastname' is required");
+//		} else if (null == student.getEmail() || student.getEmail().isEmpty()) {
+//			throw new StudentBadRequestException("Property 'email' is required");
+//		} else if (null == student.getPhone() || student.getPhone().isEmpty()) {
+//			throw new StudentBadRequestException("Property 'phone' is required");
+//		} else if (null == student.getMaritalStatus()){
+//			throw new StudentBadRequestException("Property 'maritalStatus' is required");
+//		}
+//		return studentRepository.save(student);
+//	}
+	
 	public Student save(Student student) {
 		
-		if(null == student.getFirstname() || student.getFirstname().isEmpty()) {
-			throw new StudentBadRequestException("Property 'firstname'is required");
-		} else if (null == student.getLastname() || student.getLastname().isEmpty()) {
-			throw new StudentBadRequestException("Property 'lastname' is required");
-		} else if (null == student.getEmail() || student.getEmail().isEmpty()) {
-			throw new StudentBadRequestException("Property 'email' is required");
-		} else if (null == student.getPhone() || student.getPhone().isEmpty()) {
-			throw new StudentBadRequestException("Property 'phone' is required");
-		} else if (null == student.getMaritalStatus()){
-			throw new StudentBadRequestException("Property 'maritalStatus' is required");
-		}
 		return studentRepository.save(student);
 	}
 
@@ -94,7 +101,6 @@ public class StudentService {
 			throw new StudentNotFoundException("Student not found");
 		}
 	}
-
 }
 
 
