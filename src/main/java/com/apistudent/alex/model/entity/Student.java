@@ -35,7 +35,7 @@ public class Student{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_student")
 	private Long idStudent;
-			
+	
 	@Column(name = "firstname")
 	@JsonProperty("firstname")
 	private String firstname;
