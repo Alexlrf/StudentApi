@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.apistudent.alex.model.entity.EntityWithRevisions;
 import com.apistudent.alex.model.entity.Student;
-import com.apistudent.alex.repository.GenericRevisionRepository;
+import com.apistudent.alex.service.GenericRevisionService;
 import com.apistudent.alex.service.StudentService;
 import com.apistudent.alex.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,7 +36,7 @@ public class StudentController {
 	private StudentService studentService;
 
 	@Autowired
-	private GenericRevisionRepository genericRevisionRepository;
+	private GenericRevisionService genericRevisionService;
 
 	@GetMapping(value = "/test")
 	public String getTestMessages() {
@@ -71,7 +71,7 @@ public class StudentController {
 	}
 
 	@PostMapping(value = "/student")
-	public ResponseEntity<Student> save(@RequestBody  @Valid Student student) {
+	public ResponseEntity<Student> save(@RequestBody @Valid Student student) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
@@ -118,7 +118,7 @@ public class StudentController {
 	public ResponseEntity<List<EntityWithRevisions<Student>>> getLogMessages(@PathVariable String id) {
 
 		Student stududentAudited = studentService.findById(id);
-		List<EntityWithRevisions<Student>> listRevisions = genericRevisionRepository
+		List<EntityWithRevisions<Student>> listRevisions = genericRevisionService
 				.listRevisions(stududentAudited.getIdStudent(), Student.class);
 
 		if (listRevisions != null) {

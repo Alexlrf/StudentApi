@@ -15,24 +15,24 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.apistudent.alex.domain.ExceptionMessage;
-import com.apistudent.alex.model.dto.ErrorMessageDto;
+import com.apistudent.alex.model.dto.ErrorBadRequestDto;
 import com.apistudent.alex.model.dto.ErrorNotFoundDto;
 import com.apistudent.alex.model.dto.ErrorObject;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
+		
+	@ExceptionHandler(value= StudentNotFoundException.class)
+	public ResponseEntity<ErrorNotFoundDto> handleStudentNotFoundException(StudentNotFoundException ex,
+			WebRequest request, HttpServletRequest req){
+		
+		return new ResponseEntity<ErrorNotFoundDto>(new ErrorNotFoundDto
+				(ExceptionMessage.NOT_FOUND.getText()
+						, ex.getMessage()
+						, HttpStatus.NOT_FOUND.value()
+						, req.getRequestURI()), HttpStatus.NOT_FOUND);
+	}
 	
-//	@ExceptionHandler(value= StudentNotFoundException.class)
-//	public ResponseEntity<ErrorMessageDto> handleStudentNotFoundException(StudentNotFoundException ex,
-//			WebRequest request, HttpServletRequest req){
-//		return new ResponseEntity<ErrorMessageDto>(new ErrorMessageDto
-//					(ExceptionMessage.NOT_FOUND.getText()
-//					, ex.getMessage()
-//					, HttpStatus.NOT_FOUND.value()
-//					, req.getRequestURI()), HttpStatus.NOT_FOUND);
-//			
-//	}
-//	
 	@ExceptionHandler(value= StudentBadRequestException.class)
 	public ResponseEntity<ErrorNotFoundDto> handleStudentBadRequestException(StudentBadRequestException ex,
 			WebRequest request, HttpServletRequest req){
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 					, req.getRequestURI()), HttpStatus.BAD_REQUEST);
 			
 	}
-//	
+	
 	@ExceptionHandler(value= Exception.class)
 	public ResponseEntity<ErrorNotFoundDto> handleAnyException(Exception e,
 			WebRequest request, HttpServletRequest reques){
@@ -55,33 +55,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 					, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 			
 	}
-	
-
-
-	@ExceptionHandler(value= StudentNotFoundException.class)
-	public ResponseEntity<ErrorNotFoundDto> handleStudentNotFoundException(StudentNotFoundException ex,
-			WebRequest request, HttpServletRequest req){
-		
-		return new ResponseEntity<ErrorNotFoundDto>(new ErrorNotFoundDto
-					(ExceptionMessage.NOT_FOUND.getText()
-					, ex.getMessage()
-					, HttpStatus.NOT_FOUND.value()
-					, req.getRequestURI()), HttpStatus.NOT_FOUND);
-	}
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
     		HttpHeaders headers, HttpStatus status, WebRequest request) {
     	
         List<ErrorObject> errors = getErrors(ex);
-        ErrorMessageDto errorResponse = getErrorResponse(ex, status, errors);
+        ErrorBadRequestDto errorResponse = getErrorResponse(ex, status, errors);
         return new ResponseEntity<>(errorResponse, status);
     }
 
-    private ErrorMessageDto getErrorResponse(MethodArgumentNotValidException ex,
+    private ErrorBadRequestDto getErrorResponse(MethodArgumentNotValidException ex,
     		HttpStatus status, List<ErrorObject> errors) {
     	
-        return new ErrorMessageDto("Requisição possui campos inválidos", status.value(),
+        return new ErrorBadRequestDto("Requisição possui campos inválidos", status.value(),
                 status.getReasonPhrase(), ex.getBindingResult().getObjectName(), errors);
     }
 

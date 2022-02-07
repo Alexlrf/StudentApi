@@ -76,7 +76,7 @@ public class StudentService {
 		
 		List<Student> studentsList = studentRepository.findAll();
 		
-		if (null == studentsList || studentsList.isEmpty()) {
+		if (ObjectUtils.isEmpty(studentsList)) {
 			throw new StudentBadRequestException("No records found to search");
 		} else {
 			return studentsList;
