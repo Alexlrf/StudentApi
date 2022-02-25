@@ -1,15 +1,14 @@
 package com.apistudent.alex.domain;
 
-public enum ExceptionMessage {
+public enum EnumExceptionMessage {
 	
 	NOT_FOUND("Not Found"),
 	BAD_REQUEST("Bad Request"),
 	INTERNAL_ERROR("Internal Error");
 	
-	
 	private String exceptionMessage;
 	
-	ExceptionMessage(String exceptionMessage) {
+	EnumExceptionMessage(String exceptionMessage) {
 		this.exceptionMessage = exceptionMessage;
 	}
 	

@@ -1,5 +1,7 @@
 package com.apistudent.alex.model.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Audited
 @AuditTable(value = "address_mirror")
 @Entity(name = "address")
-public class Address {
+public class Address implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.apistudent.alex.domain.ExceptionMessage;
+import com.apistudent.alex.domain.EnumExceptionMessage;
 import com.apistudent.alex.model.dto.ErrorBadRequestDto;
 import com.apistudent.alex.model.dto.ErrorNotFoundDto;
 import com.apistudent.alex.model.dto.ErrorObject;
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 			WebRequest request, HttpServletRequest req){
 		
 		return new ResponseEntity<ErrorNotFoundDto>(new ErrorNotFoundDto
-				(ExceptionMessage.NOT_FOUND.getText()
+				(EnumExceptionMessage.NOT_FOUND.getText()
 						, ex.getMessage()
 						, HttpStatus.NOT_FOUND.value()
 						, req.getRequestURI()), HttpStatus.NOT_FOUND);
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<ErrorNotFoundDto> handleStudentBadRequestException(StudentBadRequestException ex,
 			WebRequest request, HttpServletRequest req){
 		return new ResponseEntity<ErrorNotFoundDto>(new ErrorNotFoundDto
-					(ExceptionMessage.BAD_REQUEST.getText()
+					(EnumExceptionMessage.BAD_REQUEST.getText()
 					, ex.getMessage()
 					, HttpStatus.BAD_REQUEST.value()
 					, req.getRequestURI()), HttpStatus.BAD_REQUEST);
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<ErrorNotFoundDto> handleAnyException(Exception e,
 			WebRequest request, HttpServletRequest reques){
 		return new ResponseEntity<ErrorNotFoundDto>(new ErrorNotFoundDto
-					(ExceptionMessage.INTERNAL_ERROR.getText()
+					(EnumExceptionMessage.INTERNAL_ERROR.getText()
 					, e.getMessage()
 					, HttpStatus.INTERNAL_SERVER_ERROR.value()
 					, reques.getRequestURI())

@@ -2,6 +2,8 @@ package com.apistudent.alex.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -13,11 +15,14 @@ import com.apistudent.alex.repository.StudentRepository;
 
 @Service
 public class StudentService {
+	
+	private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
 	@Autowired
 	private StudentRepository studentRepository;
 	
 	public Student findById(String id) {
+		logger.info("method - findById");
 		
 		Long validId;		
 		String idWithoutNumbers = id.replaceAll("\\d", "");
@@ -31,28 +36,14 @@ public class StudentService {
 				orElseThrow(() -> new StudentNotFoundException("Student not found"));
 	}
 	
-//	public Student save(Student student) {
-//		
-//		if(null == student.getFirstname() || student.getFirstname().isEmpty()) {
-//			throw new StudentBadRequestException("Property 'firstname'is required");
-//		} else if (null == student.getLastname() || student.getLastname().isEmpty()) {
-//			throw new StudentBadRequestException("Property 'lastname' is required");
-//		} else if (null == student.getEmail() || student.getEmail().isEmpty()) {
-//			throw new StudentBadRequestException("Property 'email' is required");
-//		} else if (null == student.getPhone() || student.getPhone().isEmpty()) {
-//			throw new StudentBadRequestException("Property 'phone' is required");
-//		} else if (null == student.getMaritalStatus()){
-//			throw new StudentBadRequestException("Property 'maritalStatus' is required");
-//		}
-//		return studentRepository.save(student);
-//	}
-	
 	public Student save(Student student) {
+		logger.info("method - save");
 		
 		return studentRepository.save(student);
 	}
 
 	public String deleteById(String id) {
+		logger.info("method - deleteById");
 		
 		Long validId;
 		
@@ -73,6 +64,7 @@ public class StudentService {
 	}
 	
 	public List<Student> findAll() {
+		logger.info("method - findAll");
 		
 		List<Student> studentsList = studentRepository.findAll();
 		
@@ -84,6 +76,7 @@ public class StudentService {
 	}
 
 	public Student findWithBody(Student student) {
+		logger.info("method - findWithBody");
 		
 		if((null == student.getFirstname() || student.getFirstname().isEmpty())
 				&& null == student.getMaritalStatus()) {

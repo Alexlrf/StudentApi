@@ -1,5 +1,6 @@
 package com.apistudent.alex.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,10 +30,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Audited
 @AuditTable(value = "student_mirror")
 @Entity(name = "student")
-@TypeDef(
-	    name = "pgsql_enum", // valor Default - não é preciso mudar
-	    typeClass = PostgreSQLEnumType.class)
-public class Student{
+@TypeDef(name = "pgsql_enum",	 // valor Default - não é preciso mudar
+	     typeClass = PostgreSQLEnumType.class)
+public class Student implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
