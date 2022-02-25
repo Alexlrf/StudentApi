@@ -2,6 +2,8 @@ package com.apistudent.alex.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.apistudent.alex.model.entity.EntityWithRevisions;
 import com.apistudent.alex.model.entity.Student;
-import com.apistudent.alex.repository.GenericRevisionRepository;
+import com.apistudent.alex.service.GenericRevisionService;
 import com.apistudent.alex.service.StudentService;
 import com.apistudent.alex.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,28 +30,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @RequestMapping(value = "/studentApi")
 public class StudentController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
+	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
 	@Autowired
 	private StudentService studentService;
 
 	@Autowired
-	private GenericRevisionRepository genericRevisionRepository;
+	private GenericRevisionService genericRevisionService;
 
 	@GetMapping(value = "/test")
 	public String getTestMessages() {
+		logger.info("method - test");
 		
-		return "Tudo OK!";
+		return "OK!";
 	}
 
 	@GetMapping(value = "/students")
 	public List<Student> findAll() {
+		logger.info("method - findAll");
 
 		return studentService.findAll();
 	}
 
 	@GetMapping(value = "/student/{id}")
 	public ResponseEntity<Student> findById(@PathVariable String id) {
+		logger.info("method - findById");
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
@@ -60,6 +65,7 @@ public class StudentController {
 
 	@PostMapping(value = "/student/body")
 	public ResponseEntity<Student> findWithBody(@RequestBody Student student) {
+		logger.info("method - findWithBody");
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
@@ -69,7 +75,8 @@ public class StudentController {
 	}
 
 	@PostMapping(value = "/student")
-	public ResponseEntity<Student> save(@RequestBody Student student) {
+	public ResponseEntity<Student> save(@RequestBody @Valid Student student) {
+		logger.info("method - save");
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
@@ -80,6 +87,7 @@ public class StudentController {
 
 	@PutMapping(value = "/student")
 	public ResponseEntity<Student> changeStudent(@RequestBody Student student) {
+		logger.info("method - changeStudent");
 
 		HttpHeaders headers = null;
 
@@ -91,7 +99,7 @@ public class StudentController {
 
 		} catch (Exception e) {
 			try {
-				LOGGER.info("Erro Response - " + Utils.createJson(student));
+				logger.info("Erro Response - " + Utils.createJson(student));
 			} catch (JsonProcessingException e1) {
 				e1.printStackTrace();
 			}
@@ -102,6 +110,7 @@ public class StudentController {
 
 	@DeleteMapping(value = "/student/{id}")
 	public ResponseEntity<String> delete(@PathVariable String id) {
+		logger.info("method - delete");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
@@ -114,9 +123,10 @@ public class StudentController {
 
 	@GetMapping(value = "/changesLog/{id}")
 	public ResponseEntity<List<EntityWithRevisions<Student>>> getLogMessages(@PathVariable String id) {
+		logger.info("method - getLogMessages");
 
 		Student stududentAudited = studentService.findById(id);
-		List<EntityWithRevisions<Student>> listRevisions = genericRevisionRepository
+		List<EntityWithRevisions<Student>> listRevisions = genericRevisionService
 				.listRevisions(stududentAudited.getIdStudent(), Student.class);
 
 		if (listRevisions != null) {

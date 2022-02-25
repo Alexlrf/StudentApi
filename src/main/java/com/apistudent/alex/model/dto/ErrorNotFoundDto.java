@@ -3,22 +3,22 @@ package com.apistudent.alex.model.dto;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ErrorMessageDto {
-
+public class ErrorNotFoundDto {
+	
 	private String title;
 	private String message;
 	private int status;
 	private String path;
 	private String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a z Z"));
 
-	public ErrorMessageDto(String title, String message, int status, String path) {
+	public ErrorNotFoundDto(String title, String message, int status, String path) {
 		this.title = title;
 		this.message = message;
 		this.status = status;
 		this.path = path;
 	}
 
-	public ErrorMessageDto() {
+	public ErrorNotFoundDto() {
 
 	}
 

@@ -2,8 +2,11 @@ package com.apistudent.alex.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.apistudent.alex.exception.StudentBadRequestException;
 import com.apistudent.alex.exception.StudentNotFoundException;
@@ -12,15 +15,19 @@ import com.apistudent.alex.repository.StudentRepository;
 
 @Service
 public class StudentService {
+	
+	private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
 	@Autowired
 	private StudentRepository studentRepository;
 	
 	public Student findById(String id) {
+		logger.info("method - findById");
 		
-		Long validId;
+		Long validId;		
+		String idWithoutNumbers = id.replaceAll("\\d", "");
 		
-		if ((null == id || id.isEmpty()) || Character.isLetter(id.charAt(id.length() - 1))) {
+		if (!ObjectUtils.isEmpty(idWithoutNumbers)) {
 			throw new StudentBadRequestException("Invalid parameters");
 		} else {
 			validId = Long.valueOf(id);
@@ -30,22 +37,13 @@ public class StudentService {
 	}
 	
 	public Student save(Student student) {
+		logger.info("method - save");
 		
-		if(null == student.getFirstname() || student.getFirstname().isEmpty()) {
-			throw new StudentBadRequestException("Property 'firstname'is required");
-		} else if (null == student.getLastname() || student.getLastname().isEmpty()) {
-			throw new StudentBadRequestException("Property 'lastname' is required");
-		} else if (null == student.getEmail() || student.getEmail().isEmpty()) {
-			throw new StudentBadRequestException("Property 'email' is required");
-		} else if (null == student.getPhone() || student.getPhone().isEmpty()) {
-			throw new StudentBadRequestException("Property 'phone' is required");
-		} else if (null == student.getMaritalStatus()){
-			throw new StudentBadRequestException("Property 'maritalStatus' is required");
-		}
 		return studentRepository.save(student);
 	}
 
 	public String deleteById(String id) {
+		logger.info("method - deleteById");
 		
 		Long validId;
 		
@@ -66,10 +64,11 @@ public class StudentService {
 	}
 	
 	public List<Student> findAll() {
+		logger.info("method - findAll");
 		
 		List<Student> studentsList = studentRepository.findAll();
 		
-		if (null == studentsList || studentsList.isEmpty()) {
+		if (ObjectUtils.isEmpty(studentsList)) {
 			throw new StudentBadRequestException("No records found to search");
 		} else {
 			return studentsList;
@@ -77,6 +76,7 @@ public class StudentService {
 	}
 
 	public Student findWithBody(Student student) {
+		logger.info("method - findWithBody");
 		
 		if((null == student.getFirstname() || student.getFirstname().isEmpty())
 				&& null == student.getMaritalStatus()) {
@@ -94,7 +94,6 @@ public class StudentService {
 			throw new StudentNotFoundException("Student not found");
 		}
 	}
-
 }
 
 
