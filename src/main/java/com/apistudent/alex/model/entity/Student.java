@@ -1,6 +1,5 @@
-package com.apistudent.alex.entity;
+package com.apistudent.alex.model.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,8 +30,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	    name = "pgsql_enum", // valor Default - não é preciso mudar
 	    typeClass = PostgreSQLEnumType.class)
 public class Student{
-
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

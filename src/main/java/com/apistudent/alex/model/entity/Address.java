@@ -1,4 +1,4 @@
-package com.apistudent.alex.entity;
+package com.apistudent.alex.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity(name = "address")
 public class Address {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_address")
